@@ -1,6 +1,9 @@
-﻿namespace Sinatra.Api.Models.Users;
+﻿using System;
 
-public class CreateUserResponse
+namespace Sinatra.Api.Models.Users
 {
-    public Guid? Id { get; set; }
+    public class CreateUserResponse
+    {
+        public Guid? Id { get; set; }
+    }
 }

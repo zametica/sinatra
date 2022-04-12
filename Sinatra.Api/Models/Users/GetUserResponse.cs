@@ -1,10 +1,10 @@
-﻿namespace Sinatra.Api.Models.Users;
-
-public class GetUserResponse
+﻿namespace Sinatra.Api.Models.Users
 {
-    public string UserId { get; set;}
-    public string Email { get; set;}
-    public string FirstName { get; set;}
-    public string LastName { get; set; }
+    public class GetUserResponse
+    {
+        public string UserId { get; set; }
+        public string Email { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
 }
-

@@ -1,12 +1,15 @@
-﻿namespace Sinatra.Api.Models;
+﻿using System.Collections.Generic;
 
-public class ValidationErrorResponse
+namespace Sinatra.Api.Models
 {
-    public IList<ValidationError> Errors { get; set; }
-}
+    public class ValidationErrorResponse
+    {
+        public IList<ValidationError> Errors { get; set; }
+    }
 
-public class ValidationError
-{
-    public string Field { get; set; }
-    public string Message { get; set; }
+    public class ValidationError
+    {
+        public string Field { get; set; }
+        public string Message { get; set; }
+    }
 }

@@ -1,17 +1,21 @@
-﻿namespace Sinatra.ApiClient.Exceptions;
+﻿using System;
+using System.Collections.Generic;
 
-public class ValidationException : Exception
+namespace Sinatra.ApiClient.Exceptions
 {
-    public ValidationException(IList<ValidationError> errors)
+    public class ValidationException : Exception
     {
-        this.Errors = errors;
+        public ValidationException(IList<ValidationError> errors)
+        {
+            this.Errors = errors;
+        }
+
+        public IList<ValidationError> Errors { get; set; }
     }
 
-    public IList<ValidationError> Errors { get; set; }
-}
-
-public class ValidationError
-{
-    public string Field { get; set; }
-    public string Message { get; set; }
+    public class ValidationError
+    {
+        public string Field { get; set; }
+        public string Message { get; set; }
+    }
 }

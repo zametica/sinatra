@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sinatra.Mobile", "Sinatra.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sinatra.Desktop", "Sinatra.Desktop\Sinatra.Desktop.csproj", "{023020B7-25C1-4032-85F2-3A6E137F7CDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sinatra.Api", "Sinatra.Api\Sinatra.Api.csproj", "{6AC1F247-60A8-4812-B949-1AF6A8358F13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sinatra.Api", "Sinatra.Api\Sinatra.Api.csproj", "{6AC1F247-60A8-4812-B949-1AF6A8358F13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sinatra.ApiClient", "Sinatra.ApiClient\Sinatra.ApiClient.csproj", "{C12218D5-C368-49F2-ACAC-C8F834EB0283}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sinatra.ApiClient", "Sinatra.ApiClient\Sinatra.ApiClient.csproj", "{C12218D5-C368-49F2-ACAC-C8F834EB0283}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

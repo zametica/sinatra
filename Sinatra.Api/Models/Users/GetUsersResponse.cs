@@ -1,7 +1,9 @@
-﻿namespace Sinatra.Api.Models.Users;
+﻿using System.Collections.Generic;
 
-public class GetUsersResponse
-{ 
-    public IList<GetUserResponse> Users { get; set; }
+namespace Sinatra.Api.Models.Users
+{
+    public class GetUsersResponse
+    {
+        public IList<GetUserResponse> Users { get; set; }
+    }
 }
-
