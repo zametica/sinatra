@@ -21,7 +21,7 @@ namespace Sinatra.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<CreateUserResponse>> CreateUserAsync(CreateUserRequest body)
         {
-            return StatusCode(200, await _userService.CreateUserAsync(body));
+            return StatusCode(201, await _userService.CreateUserAsync(body));
         }
 
         [HttpGet("{userId}")]
