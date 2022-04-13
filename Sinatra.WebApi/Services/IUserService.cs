@@ -6,5 +6,4 @@ public interface IUserService
 {
     public Task<GetUserResponse> GetUserAsync(Guid userId);
     public Task<CreateUserResponse> CreateUserAsync(CreateUserRequest request);
-    public Task<LoginResponse> LoginAsync(LoginRequest request);
 }

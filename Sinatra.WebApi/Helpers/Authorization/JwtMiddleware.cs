@@ -1,8 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Sinatra.WebApi.Data.Models;
+﻿using Sinatra.WebApi.Data.Models;
+using Sinatra.WebApi.Helpers.Utils;
 
 namespace Sinatra.WebApi.Helpers.Authorization;
 
@@ -32,15 +29,7 @@ public class JwtMiddleware
     {
         try
         {
-            var validatedToken = _jwtUtils.ValidateJwtToken(token);
-            
-            var authenticatedUser = new AuthenticatedUser()
-            {
-                Id = Guid.Parse(validatedToken.Claims.First(x => x.Type == "user_id").Value),
-                Role = (Role) Enum.Parse(typeof(Role), validatedToken.Claims.First(x => x.Type == "role").Value)
-            };
-
-            context.Items["User"] = authenticatedUser;
+            context.Items["User"] = _jwtUtils.ValidateJwtToken(token);
         }
         catch
         {
@@ -48,4 +37,3 @@ public class JwtMiddleware
         }
     }
 }
-

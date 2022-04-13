@@ -1,4 +1,4 @@
-﻿namespace Sinatra.Api.Models.Users
+﻿namespace Sinatra.Api.Models.Auth
 {
     public class LoginRequest
     {
