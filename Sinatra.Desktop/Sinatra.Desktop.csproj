@@ -154,6 +154,12 @@
       <Version>6.2.12</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sinatra.ApiClient\Sinatra.ApiClient.csproj">
+      <Project>{c12218d5-c368-49f2-acac-c8f834eb0283}</Project>
+      <Name>Sinatra.ApiClient</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
