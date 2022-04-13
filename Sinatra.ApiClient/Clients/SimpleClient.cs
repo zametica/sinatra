@@ -1,8 +1,4 @@
-﻿using Newtonsoft.Json;
-using Sinatra.Api.Models;
-using Sinatra.ApiClient.Exceptions;
-using System;
-using System.Linq;
+﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -43,7 +39,7 @@ namespace Sinatra.ApiClient.Clients
                 return JsonConvert.DeserializeObject<TResponse>(await response.Content.ReadAsStringAsync());
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            if (response.StatusCode == HttpStatusCode.BadRequest)
             {
                 var errorResponse = JsonConvert.DeserializeObject<ValidationErrorResponse>(await response.Content.ReadAsStringAsync());
                 if (errorResponse != null)
@@ -54,9 +50,13 @@ namespace Sinatra.ApiClient.Clients
                         Message = x.Message
                     }).ToList());
                 }
+                else
+                {
+                    throw new Exception();
+                }
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 throw new NotFoundException();
             }
