@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sinatra.WebApi.Data.Models;
 
 namespace Sinatra.WebApi.Data.Context;
@@ -10,6 +11,8 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<User>().Property(u => u.Role).HasConversion(new EnumToStringConverter<Role>());
     }
 
     public DbSet<User> Users { get; set; }
