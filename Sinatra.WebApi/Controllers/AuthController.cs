@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sinatra.Api.Models.Auth;
+using Sinatra.WebApi.Data.Models;
+using Sinatra.WebApi.Helpers.Authorization;
 using Sinatra.WebApi.Services;
 
 namespace Sinatra.WebApi.Controllers;
 
 [ApiController]
 [Route("api/auth")]
+[Authorize(Role.ADMIN, Role.FACILITY_ADMIN, Role.FACILITY_STUFF, Role.USER, Role.TEMP_USER)]
 public class AuthController : ControllerBase
 {
     private readonly ILogger<AuthController> _logger;
@@ -17,19 +20,22 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
-
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<LoginResponse>> LoginAsync(LoginRequest body)
     {
         return Ok(await _authService.LoginAsync(body));
     }
-
+    
+    [AllowAnonymous]
     [HttpPost("logout")]
-    public async Task<ActionResult> LogoutAsync(object body)
+    public async Task<ActionResult> LogoutAsync(LogoutRequest body)
     {
-        throw new NotImplementedException();
+        await _authService.LogoutAsync(body);
+        return NoContent();
     }
 
+    [AllowAnonymous]
     [HttpPost("refreshtoken")]
     public async Task<ActionResult> RefreshTokenAsync(RefreshTokenRequest body)
     {
@@ -42,24 +48,28 @@ public class AuthController : ControllerBase
         throw new NotImplementedException();
     }
 
+    [AllowAnonymous]
     [HttpPost("resetpassword")]
     public async Task<ActionResult> ResetPasswordAsync(object body)
     {
         throw new NotImplementedException();
     }
 
+    [AllowAnonymous]
     [HttpPost("resetpassword/{token}")]
     public async Task<ActionResult> ResetPasswordConfirmAsync(object body, string token)
     {
         throw new NotImplementedException();
     }
 
+    [AllowAnonymous]
     [HttpPost("verifyemail")]
     public async Task<ActionResult> VerifyEmailAsync(object body)
     {
         throw new NotImplementedException();
     }
 
+    [AllowAnonymous]
     [HttpPost("verifyemail/{token}")]
     public async Task<ActionResult> VerifyEmailConfirmAsync(object body, string token)
     {

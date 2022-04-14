@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sinatra.WebApi.Data.Models;
-using Sinatra.WebApi.Helpers.Authorization;
 
 namespace Sinatra.WebApi.Data.Context;
 

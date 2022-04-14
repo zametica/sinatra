@@ -17,11 +17,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add database.
-builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("SinatraDb"));
-// builder.Services.AddDbContext<AppDbContext>(opt =>
-// {
-//     opt.UseSqlServer(builder.Configuration.GetConnectionString("SinatraConnectionString"));
-// });
+// builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("SinatraDb"));
+builder.Services.AddDbContext<AppDbContext>(opt =>
+{
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("SinatraLocalDbConnectionString"));
+});
 
 // Add service layer.
 builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection("JwtConfiguration"));

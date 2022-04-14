@@ -62,11 +62,10 @@ public class AuthService : IAuthService
 
         var oldRefreshToken = await _db.RefreshTokens
             .Include(rf => rf.TokenFamily)
-            .ThenInclude(tf => tf.User)
             .FirstOrDefaultAsync(x =>
                 x.Token.Equals(request.RefreshToken) &&
                 x.TokenFamily.ExpirationTime >= DateTimeOffset.Now &&
-                x.TokenFamily.User.Id.Equals(userProperties.Id));
+                x.TokenFamily.UserId.Equals(userProperties.Id));
 
         if (oldRefreshToken == null)
         {
@@ -99,5 +98,18 @@ public class AuthService : IAuthService
             AccessToken = accessToken,
             RefreshToken = newRefreshToken.Token
         };
+    }
+
+    public async Task LogoutAsync(LogoutRequest request)
+    {
+        var refreshToken = await _db.RefreshTokens
+            .Include(rt => rt.TokenFamily)
+            .FirstOrDefaultAsync(rt => rt.Token.Equals(request.RefreshToken));
+
+        if (refreshToken != null)
+        {
+            _db.TokenFamilies.Remove(refreshToken.TokenFamily);
+            await _db.SaveChangesAsync();
+        }
     }
 }

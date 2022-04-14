@@ -8,6 +8,7 @@ namespace Sinatra.WebApi.Controllers;
 
 [ApiController]
 [Route("api/users")]
+[Authorize(Role.ADMIN, Role.FACILITY_ADMIN, Role.FACILITY_STUFF, Role.USER, Role.TEMP_USER)]
 public class UsersController : ControllerBase
 {
     private readonly ILogger<UsersController> _logger;
@@ -21,13 +22,13 @@ public class UsersController : ControllerBase
 
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<ActionResult<CreateUserResponse>> CreateUserAsync(CreateUserRequest body)
     {
         return StatusCode(201, await _userService.CreateUserAsync(body));
     }
-
+    
     [HttpGet("{userId:guid}")]
-    [Authorize(Role.USER)]
     public async Task<ActionResult<GetUserResponse>> GetUserAsync(Guid userId)
     {
         return Ok(await _userService.GetUserAsync(userId));
