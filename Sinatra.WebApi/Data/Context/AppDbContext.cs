@@ -7,11 +7,8 @@ namespace Sinatra.WebApi.Data.Context;
 
 public class AppDbContext : DbContext
 {
-    private readonly UserContext _userContext;
-
-    public AppDbContext(DbContextOptions<AppDbContext> options, UserContext userContext) : base(options)
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
-        _userContext = userContext;
     }
 
     
@@ -35,11 +32,9 @@ public class AppDbContext : DbContext
             {
                 case EntityState.Added:
                     entity.CreatedAt = DateTimeOffset.Now;
-                    entity.CreatedBy = _userContext.Properties?.Id;
                     break;
                 case EntityState.Modified:
                     entity.UpdatedAt = DateTimeOffset.Now;
-                    entity.UpdatedBy = _userContext.Properties?.Id;
                     break;
             }
         }
