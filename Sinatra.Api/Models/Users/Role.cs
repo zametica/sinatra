@@ -6,6 +6,6 @@
         FACILITY_ADMIN,
         FACILITY_STUFF,
         USER,
-        ANONYMOUS
+        TEMP_USER
     }
 }
