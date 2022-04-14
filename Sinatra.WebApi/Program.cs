@@ -18,6 +18,10 @@ builder.Services.AddSwaggerGen();
 
 // Add database.
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("SinatraDb"));
+// builder.Services.AddDbContext<AppDbContext>(opt =>
+// {
+//     opt.UseSqlServer(builder.Configuration.GetConnectionString("SinatraConnectionString"));
+// });
 
 // Add service layer.
 builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection("JwtConfiguration"));

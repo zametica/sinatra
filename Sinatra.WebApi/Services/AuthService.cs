@@ -1,5 +1,4 @@
-﻿using System.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Sinatra.Api.Models.Auth;
 using Sinatra.WebApi.Data.Context;
 using Sinatra.WebApi.Data.Models;
@@ -31,14 +30,21 @@ public class AuthService : IAuthService
         {
             throw new Exception(); // email or password invalid
         }
+
+        var refreshToken = new RefreshToken
+        {
+            Token = _jwtUtils.GenerateRefreshToken(),
+            Valid = true
+        };
         
-        var userSession = new UserSession
+        var tokenFamily = new TokenFamily
         {
             UserId = user.Id,
-            RefreshToken = _jwtUtils.GenerateRefreshToken(),
-            RefreshTokenExpirationTime = DateTimeOffset.Now.AddDays(_jwtUtils.GetRefreshTokenValidityInDays())
+            ExpirationTime = DateTimeOffset.Now.AddDays(_jwtUtils.GetRefreshTokenValidityInDays()),
+            RefreshTokens = new List<RefreshToken> { refreshToken }
         };
-        _db.UserSessions.Add(userSession);
+
+        _db.TokenFamilies.Add(tokenFamily);
         await _db.SaveChangesAsync();
         
         var accessToken = _jwtUtils.GenerateJwtToken(user.Id, user.Role);
@@ -46,27 +52,44 @@ public class AuthService : IAuthService
         return new LoginResponse
         {
             AccessToken = accessToken,
-            RefreshToken = userSession.RefreshToken
+            RefreshToken = refreshToken.Token
         };
     }
 
     public async Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest request)
     {
         var userProperties = _jwtUtils.GetUserClaimsFromExpiredToken(request.AccessToken);
-        
-        var userSession = await _db.UserSessions
+
+        var oldRefreshToken = await _db.RefreshTokens
+            .Include(rf => rf.TokenFamily)
+            .ThenInclude(tf => tf.User)
             .FirstOrDefaultAsync(x =>
-                x.UserId.Equals(userProperties.Id) &&
-                x.RefreshToken.Equals(request.RefreshToken) &&
-                x.RefreshTokenExpirationTime >= DateTimeOffset.Now);
-        
-        if (userSession is null)
+                x.Token.Equals(request.RefreshToken) &&
+                x.TokenFamily.ExpirationTime >= DateTimeOffset.Now &&
+                x.TokenFamily.User.Id.Equals(userProperties.Id));
+
+        if (oldRefreshToken == null)
         {
-            throw new Exception(); // accessToken or refreshToken invalid
+            throw new Exception("AccessToken or refreshToken invalid."); // todo: return 401
         }
 
-        var refreshToken = _jwtUtils.GenerateRefreshToken();
-        userSession.RefreshToken = refreshToken;
+        if (!oldRefreshToken.Valid)
+        {
+            _db.TokenFamilies.Remove(oldRefreshToken.TokenFamily);
+            await _db.SaveChangesAsync();
+            
+            throw new Exception("RefreshToken reuse protection"); // todo: return 401
+        }
+
+        oldRefreshToken.Valid = false;
+
+        var newRefreshToken = new RefreshToken
+        {
+            Token = _jwtUtils.GenerateRefreshToken(),
+            Valid = true,
+            TokenFamilyId = oldRefreshToken.TokenFamilyId
+        };
+        _db.RefreshTokens.Add(newRefreshToken);
         await _db.SaveChangesAsync();
 
         var accessToken = _jwtUtils.GenerateJwtToken(userProperties.Id, userProperties.Role);
@@ -74,7 +97,7 @@ public class AuthService : IAuthService
         return new RefreshTokenResponse
         {
             AccessToken = accessToken,
-            RefreshToken = refreshToken
+            RefreshToken = newRefreshToken.Token
         };
     }
 }

@@ -16,11 +16,14 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<User>().Property(u => u.Role).HasConversion(new EnumToStringConverter<Role>());
+        modelBuilder.Entity<User>()
+            .Property(u => u.Role)
+            .HasConversion(new EnumToStringConverter<Role>());
     }
 
     public DbSet<User> Users { get; set; }
-    public DbSet<UserSession> UserSessions { get; set; }
+    public DbSet<TokenFamily> TokenFamilies { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
