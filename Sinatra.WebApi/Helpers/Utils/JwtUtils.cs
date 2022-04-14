@@ -13,9 +13,9 @@ namespace Sinatra.WebApi.Helpers.Utils;
 public interface IJwtUtils
 {
     public string GenerateJwtToken(Guid userId, Role role);
-    public AuthenticatedUser ValidateJwtToken(string token);
+    public UserProperties ValidateJwtToken(string token);
     public string GenerateRefreshToken();
-    public AuthenticatedUser GetUserClaimsFromExpiredToken(string token);
+    public UserProperties GetUserClaimsFromExpiredToken(string token);
     public long GetRefreshTokenValidityInDays();
 }
 
@@ -48,7 +48,7 @@ public class JwtUtils : IJwtUtils
         return _tokenHandler.WriteToken(token);
     }
 
-    public AuthenticatedUser ValidateJwtToken(string token)
+    public UserProperties ValidateJwtToken(string token)
     {
         _tokenHandler.ValidateToken(token, new TokenValidationParameters
         {
@@ -63,7 +63,7 @@ public class JwtUtils : IJwtUtils
         return ParseClaims(securityToken);
     }
 
-    public AuthenticatedUser GetUserClaimsFromExpiredToken(string token)
+    public UserProperties GetUserClaimsFromExpiredToken(string token)
     {
         _tokenHandler.ValidateToken(token, new TokenValidationParameters
         {
@@ -90,10 +90,10 @@ public class JwtUtils : IJwtUtils
         return _jwtConfiguration.RefreshTokenValidityInDays;
     }
 
-    private AuthenticatedUser ParseClaims(SecurityToken securityToken)
+    private UserProperties ParseClaims(SecurityToken securityToken)
     {
         JwtSecurityToken jwt = (JwtSecurityToken) securityToken;
-        return new AuthenticatedUser
+        return new UserProperties
         {
             Id = Guid.Parse(jwt.Claims.First(x => x.Type == "user_id").Value),
             Role = (Role) Enum.Parse(typeof(Role), jwt.Claims.First(x => x.Type == "role").Value)

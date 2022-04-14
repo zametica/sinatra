@@ -52,11 +52,11 @@ public class AuthService : IAuthService
 
     public async Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest request)
     {
-        var expiredTokenClaims = _jwtUtils.GetUserClaimsFromExpiredToken(request.AccessToken);
+        var userProperties = _jwtUtils.GetUserClaimsFromExpiredToken(request.AccessToken);
         
         var userSession = await _db.UserSessions
             .FirstOrDefaultAsync(x =>
-                x.UserId.Equals(expiredTokenClaims.Id) &&
+                x.UserId.Equals(userProperties.Id) &&
                 x.RefreshToken.Equals(request.RefreshToken) &&
                 x.RefreshTokenExpirationTime >= DateTimeOffset.Now);
         
@@ -65,11 +65,11 @@ public class AuthService : IAuthService
             throw new Exception(); // accessToken or refreshToken invalid
         }
 
-        var accessToken = _jwtUtils.GenerateJwtToken(expiredTokenClaims.Id, expiredTokenClaims.Role);
         var refreshToken = _jwtUtils.GenerateRefreshToken();
-
         userSession.RefreshToken = refreshToken;
         await _db.SaveChangesAsync();
+
+        var accessToken = _jwtUtils.GenerateJwtToken(userProperties.Id, userProperties.Role);
 
         return new RefreshTokenResponse
         {

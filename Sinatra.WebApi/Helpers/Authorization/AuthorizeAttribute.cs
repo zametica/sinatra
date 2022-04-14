@@ -17,9 +17,9 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
     
     public void OnAuthorization(AuthorizationFilterContext context)
     {
-        var user = (AuthenticatedUser) context.HttpContext.Items["User"];
+        var userProperties = (UserProperties) context.HttpContext.Items["User"];
 
-        if (user == null || !_roles.Contains(user.Role))
+        if (userProperties == null || !_roles.Contains(userProperties.Role))
         {
             context.Result = new UnauthorizedResult();
         }
