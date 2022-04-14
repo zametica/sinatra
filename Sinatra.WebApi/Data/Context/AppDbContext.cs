@@ -1,13 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sinatra.WebApi.Data.Models;
+using Sinatra.WebApi.Helpers.Authorization;
 
 namespace Sinatra.WebApi.Data.Context;
 
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    private readonly UserContext _userContext;
 
+    public AppDbContext(DbContextOptions<AppDbContext> options, UserContext userContext) : base(options)
+    {
+        _userContext = userContext;
+    }
+
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -22,13 +29,17 @@ public class AppDbContext : DbContext
     {
         foreach (var entry in ChangeTracker.Entries().Where(s => s.Entity is BaseEntity))
         {
+            var entity = (BaseEntity) entry.Entity;
+
             switch (entry.State)
             {
                 case EntityState.Added:
-                    (entry.Entity as BaseEntity).CreatedAt = DateTimeOffset.Now;
+                    entity.CreatedAt = DateTimeOffset.Now;
+                    entity.CreatedBy = _userContext.UserProperties?.Id;
                     break;
                 case EntityState.Modified:
-                    (entry.Entity as BaseEntity).UpdatedAt = DateTimeOffset.Now;
+                    entity.UpdatedAt = DateTimeOffset.Now;
+                    entity.UpdatedBy = _userContext.UserProperties?.Id;
                     break;
             }
         }
