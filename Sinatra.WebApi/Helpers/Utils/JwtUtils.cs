@@ -13,8 +13,8 @@ namespace Sinatra.WebApi.Helpers.Utils;
 public interface IJwtUtils
 {
     public string GenerateJwtToken(Guid userId, Role role);
-    public UserProperties ValidateJwtToken(string token);
     public string GenerateRefreshToken();
+    public UserProperties ValidateJwtToken(string token);
     public UserProperties GetUserClaimsFromExpiredToken(string token);
     public long GetRefreshTokenValidityInDays();
 }
@@ -48,6 +48,14 @@ public class JwtUtils : IJwtUtils
         return _tokenHandler.WriteToken(token);
     }
 
+    public string GenerateRefreshToken()
+    {
+        var randomNumber = new byte[64];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomNumber);
+        return Convert.ToBase64String(randomNumber);
+    }
+    
     public UserProperties ValidateJwtToken(string token)
     {
         _tokenHandler.ValidateToken(token, new TokenValidationParameters
@@ -75,14 +83,6 @@ public class JwtUtils : IJwtUtils
         }, out SecurityToken securityToken);
 
         return ParseClaims(securityToken);
-    }
-
-    public string GenerateRefreshToken()
-    {
-        var randomNumber = new byte[64];
-        using var rng = RandomNumberGenerator.Create();
-        rng.GetBytes(randomNumber);
-        return Convert.ToBase64String(randomNumber);
     }
 
     public long GetRefreshTokenValidityInDays()
