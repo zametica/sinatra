@@ -8,7 +8,7 @@ namespace Sinatra.WebApi.Controllers;
 
 [ApiController]
 [Route("api/auth")]
-[Authorize(Role.ADMIN, Role.FACILITY_ADMIN, Role.FACILITY_STUFF, Role.USER, Role.TEMP_USER)]
+[Authorize(Policy = AuthorizationPolicy.PERMANENT_USER)]
 public class AuthController : ControllerBase
 {
     private readonly ILogger<AuthController> _logger;

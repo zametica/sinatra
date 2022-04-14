@@ -2,13 +2,12 @@
 using Sinatra.Api.Models.Users;
 using Sinatra.WebApi.Helpers.Authorization;
 using Sinatra.WebApi.Services;
-using Role = Sinatra.WebApi.Data.Models.Role;
 
 namespace Sinatra.WebApi.Controllers;
 
 [ApiController]
 [Route("api/users")]
-[Authorize(Role.ADMIN, Role.FACILITY_ADMIN, Role.FACILITY_STUFF, Role.USER, Role.TEMP_USER)]
+[Authorize(Policy = AuthorizationPolicy.PERMANENT_USER)]
 public class UsersController : ControllerBase
 {
     private readonly ILogger<UsersController> _logger;
