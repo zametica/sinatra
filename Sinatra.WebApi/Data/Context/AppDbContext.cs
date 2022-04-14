@@ -35,11 +35,11 @@ public class AppDbContext : DbContext
             {
                 case EntityState.Added:
                     entity.CreatedAt = DateTimeOffset.Now;
-                    entity.CreatedBy = _userContext.UserProperties?.Id;
+                    entity.CreatedBy = _userContext.Properties?.Id;
                     break;
                 case EntityState.Modified:
                     entity.UpdatedAt = DateTimeOffset.Now;
-                    entity.UpdatedBy = _userContext.UserProperties?.Id;
+                    entity.UpdatedBy = _userContext.Properties?.Id;
                     break;
             }
         }

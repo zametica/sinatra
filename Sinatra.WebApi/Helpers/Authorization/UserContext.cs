@@ -4,8 +4,8 @@ public class UserContext
 {
     public UserContext(IHttpContextAccessor contextAccessor)
     {
-        UserProperties = (UserProperties) contextAccessor.HttpContext!.Items["User"];
+        Properties = (UserProperties) contextAccessor.HttpContext!.Items["User"];
     }
     
-    public UserProperties UserProperties { get; }
+    public UserProperties Properties { get; }
 }
