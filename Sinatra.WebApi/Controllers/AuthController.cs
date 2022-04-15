@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sinatra.Api.Models.Auth;
-using Sinatra.WebApi.Data.Models;
 using Sinatra.WebApi.Helpers.Authorization;
 using Sinatra.WebApi.Services;
 

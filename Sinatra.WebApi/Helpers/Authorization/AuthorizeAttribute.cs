@@ -25,7 +25,7 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
 
         if (Policy == AuthorizationPolicy.PERMANENT_USER)
         {
-            var permanentUsers = new[] {Role.ADMIN, Role.FACILITY_ADMIN, Role.FACILITY_STUFF, Role.USER};
+            var permanentUsers = new[] {Role.ADMIN, Role.FACILITY_ADMIN, Role.FACILITY_STAFF, Role.USER};
             if (!permanentUsers.Contains(userProperties.Role))
             {
                 context.Result = new UnauthorizedResult();

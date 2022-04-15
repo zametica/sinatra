@@ -4,7 +4,7 @@ public enum Role
 {
     ADMIN,
     FACILITY_ADMIN,
-    FACILITY_STUFF,
+    FACILITY_STAFF,
     USER,
     TEMP_USER
 }
