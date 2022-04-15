@@ -25,6 +25,13 @@ public class AuthController : ControllerBase
     {
         return Ok(await _authService.LoginAsync(body));
     }
+
+    [AllowAnonymous]
+    [HttpPost("bind-device")]
+    public async Task<ActionResult<BindDeviceResponse>> BindDeviceAsync(BindDeviceRequest body)
+    {
+        return Ok(await _authService.BindDeviceAsync(body));
+    }
     
     [AllowAnonymous]
     [HttpPost("logout")]
@@ -35,41 +42,41 @@ public class AuthController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpPost("refreshtoken")]
+    [HttpPost("refresh-token")]
     public async Task<ActionResult> RefreshTokenAsync(RefreshTokenRequest body)
     {
         return Ok(await _authService.RefreshTokenAsync(body));
     }
 
-    [HttpPost("changepassword")]
+    [HttpPost("change-password")]
     public async Task<ActionResult> ChangePasswordAsync(object body)
     {
         throw new NotImplementedException();
     }
 
     [AllowAnonymous]
-    [HttpPost("resetpassword")]
+    [HttpPost("reset-password")]
     public async Task<ActionResult> ResetPasswordAsync(object body)
     {
         throw new NotImplementedException();
     }
 
     [AllowAnonymous]
-    [HttpPost("resetpassword/{token}")]
+    [HttpPost("reset-password/{token}")]
     public async Task<ActionResult> ResetPasswordConfirmAsync(object body, string token)
     {
         throw new NotImplementedException();
     }
 
     [AllowAnonymous]
-    [HttpPost("verifyemail")]
+    [HttpPost("verify-email")]
     public async Task<ActionResult> VerifyEmailAsync(object body)
     {
         throw new NotImplementedException();
     }
 
     [AllowAnonymous]
-    [HttpPost("verifyemail/{token}")]
+    [HttpPost("verify-email/{token}")]
     public async Task<ActionResult> VerifyEmailConfirmAsync(object body, string token)
     {
         throw new NotImplementedException();

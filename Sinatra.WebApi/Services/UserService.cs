@@ -3,7 +3,6 @@ using Sinatra.Api.Models.Users;
 using Sinatra.WebApi.Data.Context;
 using Sinatra.WebApi.Data.Models;
 using Sinatra.WebApi.Helpers.Authorization;
-using Sinatra.WebApi.Helpers.Utils;
 using Role = Sinatra.WebApi.Data.Models.Role;
 
 namespace Sinatra.WebApi.Services;
@@ -26,9 +25,9 @@ public class UserService : IUserService
     {
         var user = new User
         {
-            Email = request.Email,
-            FirstName = request.FirstName,
-            LastName = request.LastName,
+            IdentityType = IdentityType.EMAIL,
+            Identity = request.Email,
+            Name = request.Name,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
             Role = Role.USER 
         };
@@ -46,9 +45,7 @@ public class UserService : IUserService
         return await _db.Users.Select(x => new GetUserResponse
         {
             Id = x.Id,
-            Email = x.Email,
-            FirstName = x.FirstName,
-            LastName = x.LastName,
+            Name = x.Name,
             Role = (Api.Models.Users.Role) Enum.Parse(typeof(Api.Models.Users.Role), x.Role.ToString())
         }).FirstOrDefaultAsync();
     }

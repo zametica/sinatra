@@ -6,5 +6,6 @@ public interface IAuthService
 {
     public Task<LoginResponse> LoginAsync(LoginRequest request);
     public Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest request);
-    Task LogoutAsync(LogoutRequest request);
+    public Task LogoutAsync(LogoutRequest request);
+    public Task<BindDeviceResponse> BindDeviceAsync(BindDeviceRequest request);
 }
