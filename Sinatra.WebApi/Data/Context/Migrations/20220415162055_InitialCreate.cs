@@ -14,10 +14,10 @@ namespace Sinatra.WebApi.Data.Context.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Identity = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    IdentityType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
@@ -81,6 +81,13 @@ namespace Sinatra.WebApi.Data.Context.Migrations
                 name: "IX_TokenFamilies_UserId",
                 table: "TokenFamilies",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Identity",
+                table: "Users",
+                column: "Identity",
+                unique: true,
+                filter: "[Identity] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

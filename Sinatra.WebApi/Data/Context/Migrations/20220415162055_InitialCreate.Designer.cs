@@ -12,7 +12,7 @@ using Sinatra.WebApi.Data.Context;
 namespace Sinatra.WebApi.Data.Context.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220414143117_InitialCreate")]
+    [Migration("20220415162055_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -90,13 +90,14 @@ namespace Sinatra.WebApi.Data.Context.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("Identity")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("IdentityType")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
@@ -110,6 +111,10 @@ namespace Sinatra.WebApi.Data.Context.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Identity")
+                        .IsUnique()
+                        .HasFilter("[Identity] IS NOT NULL");
 
                     b.ToTable("Users");
                 });

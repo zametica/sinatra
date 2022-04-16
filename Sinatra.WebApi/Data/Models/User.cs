@@ -2,9 +2,9 @@
 
 public class User : BaseEntity<Guid>
 {
-    public string Email { get; set; }
+    public string Identity { get; set; }
+    public IdentityType IdentityType { get; set; }
     public string PasswordHash { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public string Name { get; set; }
     public Role Role { get; set; }
 }

@@ -6,16 +6,11 @@ namespace Sinatra.ApiClient
 {
     public class SinatraApiClient
     {
-        private static SinatraApiClient ApiClient;
+        private static SinatraApiClient _apiClient;
 
         public static SinatraApiClient GetInstance(string baseAddress)
         {
-            if (ApiClient == null)
-            {
-                ApiClient = new SinatraApiClient(baseAddress);
-            }
-
-            return ApiClient;
+            return _apiClient ?? (_apiClient = new SinatraApiClient(baseAddress));
         }
 
         private SinatraApiClient(string baseAddress)

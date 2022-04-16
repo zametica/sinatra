@@ -15,9 +15,13 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<User>()
-            .Property(u => u.Role)
-            .HasConversion(new EnumToStringConverter<Role>());
+        // User
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasIndex(u => u.Identity).IsUnique();
+            entity.Property(u => u.Role).HasConversion(new EnumToStringConverter<Role>());
+            entity.Property(u => u.IdentityType).HasConversion(new EnumToStringConverter<IdentityType>());
+        });
     }
 
     public DbSet<User> Users { get; set; }
